@@ -79,10 +79,23 @@ public class FragmentSecond extends Fragment {
 
                 String etText = et.getText().toString();
                 //The filter String
-                String filter = "body LIKE ? AND body LIKE ?";
+                String filter = "body LIKE ?";
                 //The matches for the ?
-                String [] filterArgs = {"%" + etText + "%" + "%" + etText + "%"};
-                //Fetch SMS Message from buil - in Content Provider
+
+                String[] findWord = etText.split(" ");
+                for (int i = 0; i < findWord.length; i++) {
+                    findWord[i] = "%" + findWord[i] + "%";
+
+                    if (i != 0) {
+                        filter += " OR body LIKE ? ";
+                    }
+                }
+
+                // The matches for the ?
+                String[] filterArgs = findWord;
+
+
+
 
                 Cursor cursor = cr.query(uri, reqCols, filter, filterArgs, null);
                 String smsBody = "";
